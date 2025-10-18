@@ -1,19 +1,14 @@
 <template>
-  <nav class="navbar">
+  <nav :class="['navbar', { 'scrolled': isScrolled }]">
     <div class="nav-container">
       <!-- Logo -->
       <div class="logo">
         <img src="/logophy.png" alt="Dua Naga" />
-    <h1>
-  <router-link
-    to="/"
-    class="logo-text"
-  >
-    Phytomed Neo Farma
-  </router-link>
-</h1>
-
-
+        <h1>
+          <router-link to="/" class="logo-text">
+            Phytomed Neo Farma
+          </router-link>
+        </h1>
       </div>
 
       <!-- Menu desktop -->
@@ -24,7 +19,9 @@
         <li>
           <router-link to="/shop" class="nav-item" exact>Shop</router-link>
         </li>
-        <li><a href="#">Layanan</a></li>
+        <li>
+          <router-link to="/tentangkami" class="nav-item" exact>Tentang Kami</router-link>
+        </li>
         <li><a href="#">Kontak</a></li>
       </ul>
 
@@ -49,7 +46,7 @@
     <div v-if="menuOpen" class="mobile-menu">
       <router-link to="/" @click="toggleMenu">Beranda</router-link>
       <router-link to="/shop" @click="toggleMenu">Shop</router-link>
-      <a href="#">Layanan</a>
+      <router-link to="/tentangkami" @click="toggleMenu">Tentang Kami</router-link>
       <a href="#">Kontak</a>
       <button class="btn">Masuk</button>
       <button class="btn btn-solid">Daftar</button>
@@ -58,23 +55,46 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
 const menuOpen = ref(false)
+const isScrolled = ref(false)
+
 const toggleMenu = () => (menuOpen.value = !menuOpen.value)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50 // jika lebih dari 50px, ubah warna navbar
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>
-/* ====== NAVBAR HIJAU ====== */
+/* ====== NAVBAR TRANSPARAN & SCROLL EFFECT ====== */
 .navbar {
-  background-color: #1b5e20; 
-  color: #fff;
-  padding: 1rem 2rem;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+  color: #fff;
 }
 
+/* Ketika discroll, ubah warna */
+.navbar.scrolled {
+  background-color: #1b5e20;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Struktur dasar */
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -85,22 +105,29 @@ const toggleMenu = () => (menuOpen.value = !menuOpen.value)
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .logo img {
-  width: 100px;
+  width: 70px;
   height: auto;
   background-color: #fff;
-  border-radius: 8px;
-  padding: 5px;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.logo-text {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
 /* Menu */
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 1.2rem;
 }
 
 .nav-links a,
@@ -108,27 +135,29 @@ const toggleMenu = () => (menuOpen.value = !menuOpen.value)
   color: #fff;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.9rem;
   transition: color 0.2s ease;
 }
 
 .nav-links a:hover,
 .router-link-active {
-  color: #ffd54f; 
+  color: #ffd54f;
 }
 
 /* Tombol */
 .nav-buttons .btn {
   border: 1px solid #fff;
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 5px;
   background: transparent;
-  margin-right: 8px;
+  margin-right: 6px;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
 .nav-buttons .btn-solid {
-  background-color: #ffd54f;
+  background-color: #fff;
   color: #1b5e20;
   font-weight: 600;
 }
@@ -146,13 +175,14 @@ const toggleMenu = () => (menuOpen.value = !menuOpen.value)
 .mobile-menu {
   display: flex;
   flex-direction: column;
-  background: #2e7d32;
-  padding: 1rem;
+  background: rgba(27, 94, 32, 0.95);
+  padding: 0.8rem;
+  backdrop-filter: blur(5px);
 }
 
 .mobile-menu a {
   color: #fff;
-  margin: 0.5rem 0;
+  margin: 0.4rem 0;
   text-decoration: none;
 }
 
@@ -165,20 +195,4 @@ const toggleMenu = () => (menuOpen.value = !menuOpen.value)
     display: block;
   }
 }
-.logo-text {
-  color: #fff !important;
-  text-decoration: none !important;
-  font-size: 1.8rem; 
-  font-weight: 700;
-  transition: none;
-}
-
-.logo-text:hover,
-.logo-text:focus,
-.logo-text:active,
-.logo-text.router-link-active {
-  color: #fff !important;
-  text-decoration: none !important;
-}
-
 </style>

@@ -21,7 +21,7 @@
 
         <!-- LAYANAN KUSTOM -->
     <section class="services">
-      <h2>Layanan Kustom</h2>
+      <h2>Layanan Kami</h2>
       <div class="underline"></div>
       <div class="service-list">
         <div class="service-card" v-for="s in services" :key="s.id">
@@ -104,7 +104,48 @@
     </div>
   </div>
 </section>
+    <section class="sertifikasi-section">
+  <h2 class="section-title">Sertifikasi</h2>
+  <div class="line"></div>
 
+  <div class="cert-container">
+    <div class="cert-item">
+      <img src="/halal.png" alt="Sertifikat Halal" />
+      <p>Telah memenuhi uji standar halal dari Majelis Ulama Indonesia</p>
+    </div>
+
+    <div class="cert-item">
+      <img src="/bpom.png" alt="Sertifikat BPOM" />
+      <p>Telah memenuhi ijin edar dari Badan Pengawasan Obat dan Makanan</p>
+    </div>
+
+    <div class="cert-item">
+      <img src="/kemenkumham.png" alt="Sertifikat CPKB" />
+      <p>Telah memenuhi persyaratan Cara Pembuatan Kosmetik yang Baik</p>
+    </div>
+  </div>
+</section>
+  <!-- === CLIENT KAMI (CAROUSEL) === -->
+    <section class="client-section">
+      <div class="client-container">
+        <div class="client-text">
+          <h2>CLIENT KAMI</h2>
+          <p>Kami dipercaya oleh berbagai brand ternama dalam industri herbal dan kecantikan.</p>
+        </div>
+
+        <div class="carousel">
+          <div class="carousel-track">
+            <img src="/fimel.png" alt="Client Fimel" />
+            <img src="/huangyu.png" alt="Client Huangyu" />
+            <img src="/phyto-v.png" alt="Client PhytoV" />
+            <!-- duplikasi agar looping mulus -->
+            <img src="/fimel.png" alt="Client Fimel" />
+            <img src="/huangyu.png" alt="Client Huangyu" />
+            <img src="/phyto-v.png" alt="Client PhytoV" />
+          </div>
+        </div>
+      </div>
+    </section>
 
   </div>
 </template>
@@ -159,7 +200,8 @@ const services = ref([
     title: "Logistik & Pengiriman",
     text: "Dimanapun Anda berada di dunia, kami akan memproduksi kosmetik untuk Anda. Pengiriman ke seluruh dunia tersedia, Anda dapat memilih pengiriman melalui laut, kereta, atau udara.",
     icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M20.92 8.58l-2.42-2.42A2 2 0 0017.17 6H6a2 2 0 00-2 2v8h2v-2h12v2h2v-4.59l.92.92 1.41-1.41L20.92 8.58zM6 10V8h11.17l1 1H6z'/></svg>`,
-  },
+  }
+
 ])
 </script>
 
@@ -221,7 +263,7 @@ const services = ref([
 }
 
 .btn-hero:hover {
-  background-color: #e6c200;
+  background-color: #fff;
 }
 
 
@@ -478,6 +520,122 @@ const services = ref([
   color: #333;
   margin: 5px 0 0;
 }
+/* === CLIENT KAMI === */
+.client-section {
+  background-color: #fafafa;
+  padding: 80px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.client-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.client-text {
+  flex: 1;
+}
+
+.client-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.client-text p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.carousel {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 40px;
+  animation: scroll 15s linear infinite;
+}
+
+.carousel-track img {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0.9);
+  transition: transform 0.3s ease;
+}
+
+.carousel-track img:hover {
+  transform: scale(1.1);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.sertifikasi-section {
+  text-align: center;
+  padding: 70px 30px;
+  background: #fff;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.line {
+  width: 60px;
+  height: 4px;
+  background: #1b5e20;
+  margin: 0 auto 40px;
+  border-radius: 2px;
+}
+
+.cert-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.cert-item {
+  width: 250px;
+  text-align: center;
+}
+
+.cert-item img {
+  width: 140px;          
+  height: 140px;        
+  object-fit: contain;    
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+.cert-item img:hover {
+  transform: scale(1.08);
+}
+
+.cert-item p {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+}
 
 </style>

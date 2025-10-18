@@ -1,23 +1,37 @@
 <template>
   <div class="shop-page">
-    <!-- FILTER AREA -->
-    <div class="filter-bar">
-      <div class="filter-item">
-        <label>Kategori</label>
-        <select v-model="selectedCategory" class="form-select" @change="filterProducts">
-          <option value="">-- Semua Kategori --</option>
-          <option
-            v-for="kategori in categories"
-            :key="kategori.id"
-            :value="kategori.id"
-          >
-            {{ kategori.name }}
-          </option>
-        </select>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <img src="/pabrik.png" alt="Shop Banner" class="hero-image" />
+      <div class="hero-overlay">
+        <h1>SHOP</h1>
       </div>
+    </section>
 
-      <div class="filter-item">
-        <label>Urutkan</label>
+    <!-- KATEGORI LINK -->
+    <div class="category-links">
+      <span
+        class="category-link"
+        :class="{ active: selectedCategory === '' }"
+        @click="selectedCategory = ''"
+      >
+        Semua
+      </span>
+      <span
+        v-for="kategori in categories"
+        :key="kategori.id"
+        class="category-link"
+        :class="{ active: selectedCategory === kategori.id }"
+        @click="selectedCategory = kategori.id"
+      >
+        {{ kategori.name }}
+      </span>
+    </div>
+
+    <!-- SORT & SEARCH -->
+    <div class="sort-search-bar">
+      <div class="sort">
+        <label>Urutkan:</label>
         <select v-model="sortOption" class="form-select">
           <option value="default">Default</option>
           <option value="harga_asc">Harga Termurah</option>
@@ -25,8 +39,7 @@
         </select>
       </div>
 
-      <div class="filter-item">
-        <label>Pencarian</label>
+      <div class="search">
         <input
           v-model="searchQuery"
           type="text"
@@ -43,20 +56,14 @@
         :key="barang.id"
         class="product-card"
       >
-        <!-- Badge Kategori -->
         <div class="badge">
           {{ barang.kategori?.name || "Tanpa Kategori" }}
         </div>
 
-        <!-- Gambar -->
         <div class="image-box">
-          <img
-            :src="getImage(barang.gambar)"
-            alt="gambar produk"
-          />
+          <img :src="getImage(barang.gambar)" alt="gambar produk" />
         </div>
 
-        <!-- Body -->
         <div class="card-body">
           <h4 class="product-title">{{ barang.nama_barang }}</h4>
           <p class="desc">
@@ -65,15 +72,14 @@
           <p class="stok">Stok: {{ barang.stok }}</p>
         </div>
 
-        <!-- Footer -->
         <div class="card-footer">
           <div class="price">
             Rp {{ barang.harga.toLocaleString("id-ID") }}
           </div>
           <div class="actions">
             <button class="btn-detail" @click="$router.push(`/produk/${barang.id}`)">
-  Lihat Detail
-</button>
+              Lihat Detail
+            </button>
             <button class="btn-cart">
               <i class="fas fa-cart-plus"></i>
             </button>
@@ -82,7 +88,6 @@
       </div>
     </div>
 
-    <!-- Jika kosong -->
     <div v-if="!sortedProducts.length" class="no-data">
       Tidak ada produk ditemukan.
     </div>
@@ -102,7 +107,6 @@ const searchQuery = ref("");
 const API_URL = "http://localhost:8000/api/barang";
 const CAT_URL = "http://localhost:8000/api/categories";
 
-// Ambil data API
 const getData = async () => {
   try {
     const [resProducts, resCategories] = await Promise.all([
@@ -120,14 +124,12 @@ const getData = async () => {
 const filteredProducts = computed(() => {
   let data = [...products.value];
 
-  // Filter kategori
   if (selectedCategory.value) {
     data = data.filter(
       (p) => p.kategori_id === parseInt(selectedCategory.value)
     );
   }
 
-  // Pencarian
   if (searchQuery.value.trim() !== "") {
     const q = searchQuery.value.toLowerCase();
     data = data.filter(
@@ -140,18 +142,15 @@ const filteredProducts = computed(() => {
   return data;
 });
 
-// Sorting produk
+// Sorting
 const sortedProducts = computed(() => {
   let data = [...filteredProducts.value];
-  if (sortOption.value === "harga_asc") {
-    data.sort((a, b) => a.harga - b.harga);
-  } else if (sortOption.value === "harga_desc") {
-    data.sort((a, b) => b.harga - a.harga);
-  }
+  if (sortOption.value === "harga_asc") data.sort((a, b) => a.harga - b.harga);
+  else if (sortOption.value === "harga_desc") data.sort((a, b) => b.harga - a.harga);
   return data;
 });
 
-// Fungsi bantu
+// Helpers
 const getImage = (path) => {
   if (!path) return "https://via.placeholder.com/300x200?text=No+Image";
   if (path.startsWith("http")) return path;
@@ -167,29 +166,84 @@ onMounted(getData);
 
 <style scoped>
 .shop-page {
-  padding: 40px 60px;
+  padding: 0;
   background: #f9fafb;
   min-height: 100vh;
 }
 
-/* Filter bar */
-.filter-bar {
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(60%);
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-overlay h1 {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* CATEGORY LINKS (hanya teks) */
+.category-links {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 30px;
+  margin: 25px auto 15px;
 }
 
-.filter-item {
-  flex: 1;
-  min-width: 220px;
-  display: flex;
-  flex-direction: column;
+.category-link {
+  cursor: pointer;
+  color: #444;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  font-size: 1rem;
 }
 
-label {
+.category-link:hover {
+  color: #28a745;
+}
+
+.category-link.active {
+  color: #28a745;
   font-weight: 600;
-  margin-bottom: 6px;
+  text-decoration: underline;
+}
+
+/* SORT & SEARCH */
+.sort-search-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 60px 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sort label {
+  font-weight: 600;
+  margin-right: 10px;
   color: #333;
 }
 
@@ -200,14 +254,15 @@ label {
   border: 1px solid #ccc;
 }
 
-/* Grid */
+/* PRODUCT GRID */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 25px;
+  padding: 0 60px 60px;
 }
 
-/* Card */
+/* PRODUCT CARD */
 .product-card {
   background: #fff;
   border-radius: 14px;
@@ -224,7 +279,7 @@ label {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-/* Badge */
+/* BADGE */
 .badge {
   position: absolute;
   top: 10px;
@@ -237,7 +292,7 @@ label {
   z-index: 10;
 }
 
-/* Gambar */
+/* IMAGE */
 .image-box {
   background: #f4f4f4;
   height: 220px;
@@ -251,7 +306,7 @@ label {
   object-fit: contain;
 }
 
-/* Body */
+/* BODY */
 .card-body {
   padding: 15px;
   flex: 1;
@@ -274,7 +329,7 @@ label {
   margin-top: 5px;
 }
 
-/* Footer */
+/* FOOTER */
 .card-footer {
   border-top: 1px solid #eee;
   padding: 12px 15px;
