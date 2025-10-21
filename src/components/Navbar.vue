@@ -3,7 +3,11 @@
     <div class="nav-container">
       <!-- Logo -->
       <div class="logo">
-        <img src="/logophy.png" alt="Dua Naga" />
+        <!-- Ganti logo otomatis saat discroll -->
+        <img
+          :src="isScrolled ? '/logophy.png' : '/logoputih.png'"
+          alt="Dua Naga"
+        />
         <h1>
           <router-link to="/" class="logo-text">
             Phytomed Neo Farma
@@ -33,11 +37,33 @@
 
       <!-- Menu mobile toggle -->
       <div class="menu-toggle" @click="toggleMenu">
-        <svg v-if="!menuOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <svg
+          v-if="!menuOpen"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </div>
     </div>
@@ -55,53 +81,61 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const menuOpen = ref(false)
-const isScrolled = ref(false)
+const menuOpen = ref(false);
+const isScrolled = ref(false);
 
-const toggleMenu = () => (menuOpen.value = !menuOpen.value)
+const toggleMenu = () => (menuOpen.value = !menuOpen.value);
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50 // jika lebih dari 50px, ubah warna navbar
-}
+  isScrolled.value = window.scrollY > 50;
+};
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
+  window.addEventListener("scroll", handleScroll);
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <style scoped>
-/* ====== NAVBAR TRANSPARAN & SCROLL EFFECT ====== */
+/* ===== NAVBAR STYLING FINAL ===== */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 0.7rem 1rem;
-  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  height: 80px; /* 🔹 tinggi tetap */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem; /* 🔹 padding seragam */
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
   z-index: 1000;
   background-color: transparent;
   color: #fff;
+  box-sizing: border-box;
 }
 
-/* Ketika discroll, ubah warna */
 .navbar.scrolled {
-  background-color: #1b5e20;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: #1b5e20;
 }
 
-/* Struktur dasar */
+/* Container dalam navbar */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Logo */
+/* ===== LOGO ===== */
 .logo {
   display: flex;
   align-items: center;
@@ -109,11 +143,10 @@ onBeforeUnmount(() => {
 }
 
 .logo img {
-  width: 70px;
-  height: auto;
-  background-color: #fff;
-  border-radius: 6px;
-  padding: 3px;
+  width: 100px;
+  max-height: 60px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .logo-text {
@@ -121,9 +154,15 @@ onBeforeUnmount(() => {
   text-decoration: none !important;
   font-size: 1.4rem;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
-/* Menu */
+/* Ubah warna teks logo saat discroll */
+.navbar.scrolled .logo-text {
+  color: #1b5e20 !important;
+}
+
+/* ===== MENU DESKTOP ===== */
 .nav-links {
   display: flex;
   list-style: none;
@@ -135,7 +174,7 @@ onBeforeUnmount(() => {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: color 0.2s ease;
 }
 
@@ -144,16 +183,27 @@ onBeforeUnmount(() => {
   color: #ffd54f;
 }
 
-/* Tombol */
+/* Warna menu saat discroll */
+.navbar.scrolled .nav-links a,
+.navbar.scrolled .nav-item {
+  color: #1b5e20;
+}
+
+.navbar.scrolled .nav-links a:hover {
+  color: #388e3c;
+}
+
+/* ===== TOMBOL LOGIN/DAFTAR ===== */
 .nav-buttons .btn {
   border: 1px solid #fff;
   color: #fff;
-  padding: 4px 10px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
   background: transparent;
   margin-right: 6px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .nav-buttons .btn-solid {
@@ -163,36 +213,67 @@ onBeforeUnmount(() => {
 }
 
 .nav-buttons .btn:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* Menu mobile */
+/* Saat discroll ubah warna tombol */
+.navbar.scrolled .btn {
+  border-color: #1b5e20;
+  color: #1b5e20;
+}
+
+.navbar.scrolled .btn-solid {
+  background-color: #1b5e20;
+  color: #fff;
+}
+
+/* ===== MENU MOBILE ===== */
 .menu-toggle {
   display: none;
   cursor: pointer;
+  color: inherit;
+  width: 28px;
+  height: 28px;
 }
 
 .mobile-menu {
   display: flex;
   flex-direction: column;
-  background: rgba(27, 94, 32, 0.95);
-  padding: 0.8rem;
+  background: rgba(27, 94, 32, 0.97);
+  padding: 0.8rem 1rem;
   backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
 }
 
 .mobile-menu a {
   color: #fff;
   margin: 0.4rem 0;
   text-decoration: none;
+  font-size: 1rem;
 }
 
+.mobile-menu .btn {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .nav-links,
   .nav-buttons {
     display: none;
   }
+
   .menu-toggle {
     display: block;
+  }
+
+  .logo img {
+    width: 70px;
+  }
+
+  .navbar {
+    height: 70px;
   }
 }
 </style>

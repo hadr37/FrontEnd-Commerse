@@ -1,58 +1,69 @@
 <template>
-  <div v-if="product" class="product-detail">
-    <div class="content">
-      <!-- Gambar Produk -->
-      <div class="image-section">
-        <img :src="getImage(product.gambar)" alt="Gambar Produk" />
+  <div>
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <img src="/banner-tengah.png" alt="Banner" class="hero-image" />
+      <div class="overlay"></div>
+      <div class="hero-text">
+        <h1>Detail Produk</h1>
       </div>
+    </section>
 
-      <!-- Detail Produk -->
-      <div class="info-section">
-        <p class="category">
-          Kategori:
-          <span>{{ product.kategori?.name || "Tanpa Kategori" }}</span>
-        </p>
-
-        <h2 class="title">{{ product.nama_barang }}</h2>
-
-        <ul class="detail-list">
-          <li><strong>Merek:</strong> Dua Naga Kosmetindo</li>
-          <li><strong>Tekstur:</strong> {{ product.tekstur || "Krim ringan, tidak lengket" }}</li>
-          <li><strong>Tipe kulit:</strong> {{ product.tipe_kulit || "Semua jenis kulit" }}</li>
-          <li><strong>Digunakan untuk:</strong> {{ product.kegunaan || "Wajah dan tubuh" }}</li>
-          <li><strong>Bahan utama:</strong> {{ product.bahan_utama || "-" }}</li>
-        </ul>
-
-        <div class="desc-section">
-          <h4>Manfaat:</h4>
-          <p>{{ product.deskripsi || "Deskripsi belum tersedia." }}</p>
+    <!-- Konten Produk -->
+    <div v-if="product" class="product-detail">
+      <div class="content">
+        <!-- Gambar Produk -->
+        <div class="image-section">
+          <img :src="getImage(product.gambar)" alt="Gambar Produk" />
         </div>
 
-        <button class="btn-offer" @click="showModal = true">Dapatkan Penawaran</button>
+        <!-- Detail Produk -->
+        <div class="info-section">
+          <p class="category">
+            Kategori:
+            <span>{{ product.kategori?.name || "Tanpa Kategori" }}</span>
+          </p>
+
+          <h2 class="title">{{ product.nama_barang }}</h2>
+
+          <ul class="detail-list">
+            <li><strong>Merek:</strong> Dua Naga Kosmetindo</li>
+            <li><strong>Tekstur:</strong> {{ product.tekstur || "Krim ringan, tidak lengket" }}</li>
+            <li><strong>Tipe kulit:</strong> {{ product.tipe_kulit || "Semua jenis kulit" }}</li>
+            <li><strong>Digunakan untuk:</strong> {{ product.kegunaan || "Wajah dan tubuh" }}</li>
+            <li><strong>Bahan utama:</strong> {{ product.bahan_utama || "-" }}</li>
+          </ul>
+
+          <div class="desc-section">
+            <h4>Manfaat:</h4>
+            <p>{{ product.deskripsi || "Deskripsi belum tersedia." }}</p>
+          </div>
+
+          <button class="btn-offer" @click="showModal = true">Dapatkan Penawaran</button>
+        </div>
+      </div>
+
+      <!-- Popup Form -->
+      <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Dapatkan Penawaran Menarik</h3>
+            <button class="close-btn" @click="showModal = false">&times;</button>
+          </div>
+
+          <form class="modal-form" @submit.prevent="submitForm">
+            <input v-model="form.nama" type="text" placeholder="Nama" required />
+            <input v-model="form.email" type="email" placeholder="E-mail" required />
+            <input v-model="form.telepon" type="text" placeholder="No Telepon / Whatsapp" required />
+            <textarea v-model="form.pesan" rows="4" placeholder="Pesan"></textarea>
+            <button type="submit" class="submit-btn">Kirim</button>
+          </form>
+        </div>
       </div>
     </div>
 
-    <!-- Popup Form -->
-    <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
-      <div class="modal">
-        <div class="modal-header">
-          <h3>Dapatkan Penawaran Menarik</h3>
-          <button class="close-btn" @click="showModal = false">&times;</button>
-        </div>
-
-        <form class="modal-form" @submit.prevent="submitForm">
-          <input v-model="form.nama" type="text" placeholder="Nama" required />
-          <input v-model="form.email" type="email" placeholder="E-mail" required />
-          <input v-model="form.telepon" type="text" placeholder="No Telepon / Whatsapp" required />
-          <textarea v-model="form.pesan" rows="4" placeholder="Pesan"></textarea>
-
-          <button type="submit" class="submit-btn">Kirim</button>
-        </form>
-      </div>
-    </div>
+    <div v-else class="loading">Memuat detail produk...</div>
   </div>
-
-  <div v-else class="loading">Memuat detail produk...</div>
 </template>
 
 <script setup>
@@ -81,7 +92,7 @@ onMounted(async () => {
   try {
     const res = await axios.get(`http://localhost:8000/api/barang/${route.params.id}`)
     product.value = res.data
-    window.scrollTo({ top: 0, behavior: "smooth" }) // biar tidak ketutup navbar
+    window.scrollTo({ top: 0, behavior: "smooth" })
   } catch (error) {
     console.error("Gagal mengambil detail produk:", error)
   }
@@ -94,13 +105,69 @@ const submitForm = () => {
 }
 </script>
 
+
 <style scoped>
+.product-page {
+  background: #fff;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* === HERO SECTION === */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  height: 45vh;
+  overflow: hidden;
+  margin-top: -80px; 
+  z-index: 1;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-text {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+/* === DETAIL PRODUK === */
 .product-detail {
-  padding: 120px 80px 50px; 
+  padding: 60px 80px 50px;
   background: #fff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  z-index: 2;
+  position: relative;
+}
+
+
+/* DETAIL PRODUK */
+.product-detail {
+  padding: 70px 80px 50px;
+  display: flex;
+  justify-content: center;
+  background: #fff;
 }
 
 .content {
@@ -111,7 +178,6 @@ const submitForm = () => {
   align-items: flex-start;
 }
 
-/* Gambar produk */
 .image-section {
   flex: 1;
   min-width: 300px;
@@ -127,7 +193,6 @@ const submitForm = () => {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Detail produk */
 .info-section {
   flex: 1;
   min-width: 300px;
@@ -192,7 +257,7 @@ const submitForm = () => {
   background: #28a745;
 }
 
-/* Modal */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -266,10 +331,10 @@ const submitForm = () => {
   color: #555;
 }
 
-/* Responsif */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .product-detail {
-    padding: 70px 20px 30px;
+    padding: 40px 20px 30px;
   }
 
   .content {
@@ -284,6 +349,10 @@ const submitForm = () => {
 
   .info-section {
     margin-top: 15px;
+  }
+
+  .hero-overlay h1 {
+    font-size: 2rem;
   }
 }
 </style>
