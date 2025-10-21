@@ -1,41 +1,26 @@
 <template>
-  <nav :class="['navbar', { 'scrolled': isScrolled }]">
+  <nav :class="['navbar', { scrolled: isScrolled }]">
     <div class="nav-container">
       <!-- Logo -->
       <div class="logo">
-        <!-- Ganti logo otomatis saat discroll -->
         <img
           :src="isScrolled ? '/logophy.png' : '/logoputih.png'"
-          alt="Dua Naga"
+          alt="Phytomed"
         />
         <h1>
-          <router-link to="/" class="logo-text">
-            Phytomed Neo Farma
-          </router-link>
+          <router-link to="/" class="logo-text">Phytomed Neo Farma</router-link>
         </h1>
       </div>
 
-      <!-- Menu desktop -->
+      <!-- Menu Tengah (Desktop) -->
       <ul class="nav-links">
-        <li>
-          <router-link to="/" class="nav-item" exact>Beranda</router-link>
-        </li>
-        <li>
-          <router-link to="/shop" class="nav-item" exact>Shop</router-link>
-        </li>
-        <li>
-          <router-link to="/tentangkami" class="nav-item" exact>Tentang Kami</router-link>
-        </li>
-        <li><a href="#">Kontak</a></li>
+        <li><router-link to="/" class="nav-item" exact>Beranda</router-link></li>
+        <li><router-link to="/shop" class="nav-item" exact>Shop</router-link></li>
+        <li><router-link to="/tentangkami" class="nav-item" exact>Tentang Kami</router-link></li>
+        <li><router-link to="/Contact" class="nav-item" exact>Kontak Kami</router-link></li>
       </ul>
 
-      <!-- Tombol -->
-      <div class="nav-buttons">
-        <button class="btn">Masuk</button>
-        <button class="btn btn-solid">Daftar</button>
-      </div>
-
-      <!-- Menu mobile toggle -->
+      <!-- Toggle Menu (Hanya tampil di mobile) -->
       <div class="menu-toggle" @click="toggleMenu">
         <svg
           v-if="!menuOpen"
@@ -44,12 +29,8 @@
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
         </svg>
         <svg
           v-else
@@ -58,24 +39,18 @@
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
         </svg>
       </div>
     </div>
 
-    <!-- Menu mobile -->
+    <!-- Menu Mobile -->
     <div v-if="menuOpen" class="mobile-menu">
       <router-link to="/" @click="toggleMenu">Beranda</router-link>
       <router-link to="/shop" @click="toggleMenu">Shop</router-link>
       <router-link to="/tentangkami" @click="toggleMenu">Tentang Kami</router-link>
-      <a href="#">Kontak</a>
-      <button class="btn">Masuk</button>
-      <button class="btn btn-solid">Daftar</button>
+      <a href="#" @click="toggleMenu">Kontak</a>
     </div>
   </nav>
 </template>
@@ -102,30 +77,28 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* ===== NAVBAR STYLING FINAL ===== */
+/* ===== NAVBAR FINAL ===== */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 80px; /* 🔹 tinggi tetap */
+  height: 80px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding: 0 1rem; /* 🔹 padding seragam */
-  transition: background-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
   z-index: 1000;
   background-color: transparent;
   color: #fff;
-  box-sizing: border-box;
 }
 
 .navbar.scrolled {
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   color: #1b5e20;
 }
 
-/* Container dalam navbar */
+/* ===== CONTAINER ===== */
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -133,6 +106,8 @@ onBeforeUnmount(() => {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
 }
 
 /* ===== LOGO ===== */
@@ -152,12 +127,11 @@ onBeforeUnmount(() => {
 .logo-text {
   color: #fff !important;
   text-decoration: none !important;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   transition: color 0.3s ease;
 }
 
-/* Ubah warna teks logo saat discroll */
 .navbar.scrolled .logo-text {
   color: #1b5e20 !important;
 }
@@ -166,7 +140,10 @@ onBeforeUnmount(() => {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 1.2rem;
+  gap: 1.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-links a,
@@ -174,7 +151,7 @@ onBeforeUnmount(() => {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: color 0.2s ease;
 }
 
@@ -183,7 +160,6 @@ onBeforeUnmount(() => {
   color: #ffd54f;
 }
 
-/* Warna menu saat discroll */
 .navbar.scrolled .nav-links a,
 .navbar.scrolled .nav-item {
   color: #1b5e20;
@@ -193,51 +169,23 @@ onBeforeUnmount(() => {
   color: #388e3c;
 }
 
-/* ===== TOMBOL LOGIN/DAFTAR ===== */
-.nav-buttons .btn {
-  border: 1px solid #fff;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: transparent;
-  margin-right: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-buttons .btn-solid {
-  background-color: #fff;
-  color: #1b5e20;
-  font-weight: 600;
-}
-
-.nav-buttons .btn:hover {
-  opacity: 0.85;
-}
-
-/* Saat discroll ubah warna tombol */
-.navbar.scrolled .btn {
-  border-color: #1b5e20;
-  color: #1b5e20;
-}
-
-.navbar.scrolled .btn-solid {
-  background-color: #1b5e20;
-  color: #fff;
-}
-
-/* ===== MENU MOBILE ===== */
+/* ===== MENU TOGGLE ===== */
 .menu-toggle {
   display: none;
   cursor: pointer;
   color: inherit;
   width: 28px;
   height: 28px;
+  transition: transform 0.3s ease;
 }
 
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* ===== MOBILE MENU ===== */
 .mobile-menu {
-  display: flex;
+  display: none;
   flex-direction: column;
   background: rgba(27, 94, 32, 0.97);
   padding: 0.8rem 1rem;
@@ -252,15 +200,13 @@ onBeforeUnmount(() => {
   font-size: 1rem;
 }
 
-.mobile-menu .btn {
-  margin-top: 0.5rem;
-  width: 100%;
+.mobile-menu a:hover {
+  color: #ffd54f;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .nav-links,
-  .nav-buttons {
+  .nav-links {
     display: none;
   }
 
@@ -268,12 +214,16 @@ onBeforeUnmount(() => {
     display: block;
   }
 
+  .mobile-menu {
+    display: flex;
+  }
+
   .logo img {
     width: 70px;
   }
 
   .navbar {
-    height: 70px;
+    height: auto;
   }
 }
 </style>

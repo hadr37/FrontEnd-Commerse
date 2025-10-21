@@ -80,9 +80,9 @@
             <button class="btn-detail" @click="$router.push(`/produk/${barang.id}`)">
               Lihat Detail
             </button>
-            <button class="btn-cart">
+            <!-- <button class="btn-cart">
               <i class="fas fa-cart-plus"></i>
-            </button>
+            </button> -->
           </div>
         </div>
       </div>

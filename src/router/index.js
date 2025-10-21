@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Shop from '../views/Shop.vue' 
 import ProductDetail from "../views/ProductDetail.vue"
 import TentangKami from "../views/TentangKami.vue"
+import Contact from "../views/Contact.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,7 +26,12 @@ const router = createRouter({
   path: '/tentangkami',
   name: 'TentangKami',
   component: TentangKami
-}
+},
+{
+      path: '/Contact',
+      name: 'Contact',
+      component: Contact
+    },
   ]
 })
 
