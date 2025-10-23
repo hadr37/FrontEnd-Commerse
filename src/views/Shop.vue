@@ -66,9 +66,13 @@
 
         <div class="card-body">
           <h4 class="product-title">{{ barang.nama_barang }}</h4>
-          <p class="desc">
-            {{ barang.deskripsi ? truncate(barang.deskripsi, 60) : "Tidak ada deskripsi" }}
-          </p>
+
+          <!-- Deskripsi dengan HTML -->
+          <p
+            class="desc"
+            v-html="barang.deskripsi ? truncateHTML(barang.deskripsi, 120) : 'Tidak ada deskripsi'"
+          ></p>
+
           <p class="stok">Stok: {{ barang.stok }}</p>
         </div>
 
@@ -80,9 +84,6 @@
             <button class="btn-detail" @click="$router.push(`/produk/${barang.id}`)">
               Lihat Detail
             </button>
-            <!-- <button class="btn-cart">
-              <i class="fas fa-cart-plus"></i>
-            </button> -->
           </div>
         </div>
       </div>
@@ -107,6 +108,7 @@ const searchQuery = ref("");
 const API_URL = "http://localhost:8000/api/barang";
 const CAT_URL = "http://localhost:8000/api/categories";
 
+// Ambil data produk dan kategori
 const getData = async () => {
   try {
     const [resProducts, resCategories] = await Promise.all([
@@ -150,14 +152,18 @@ const sortedProducts = computed(() => {
   return data;
 });
 
-// Helpers
+// Ambil gambar
 const getImage = (path) => {
   if (!path) return "https://via.placeholder.com/300x200?text=No+Image";
   if (path.startsWith("http")) return path;
   return `http://localhost:8000/storage/${path}`;
 };
 
-const truncate = (text, length) => {
+// Fungsi aman untuk potong deskripsi HTML
+const truncateHTML = (html, length) => {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const text = div.textContent || div.innerText || "";
   return text.length > length ? text.slice(0, length) + "..." : text;
 };
 
@@ -204,7 +210,7 @@ onMounted(getData);
   letter-spacing: 2px;
 }
 
-/* CATEGORY LINKS (hanya teks) */
+/* CATEGORY LINKS */
 .category-links {
   display: flex;
   justify-content: center;
@@ -294,16 +300,25 @@ onMounted(getData);
 
 /* IMAGE */
 .image-box {
-  background: #f4f4f4;
-  height: 220px;
+  background: #fff;
+  height: 250px; 
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
 }
 
 .image-box img {
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  transition: transform 0.3s ease;
+  border-radius: 4px;
+}
+
+.product-card:hover .image-box img {
+  transform: scale(1.05); 
 }
 
 /* BODY */
@@ -321,6 +336,7 @@ onMounted(getData);
 .desc {
   color: #666;
   font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .stok {
@@ -361,14 +377,6 @@ onMounted(getData);
 
 .btn-detail:hover {
   background: #1e7e34;
-}
-
-.btn-cart {
-  background: none;
-  border: none;
-  color: #28a745;
-  font-size: 1.1rem;
-  cursor: pointer;
 }
 
 .no-data {

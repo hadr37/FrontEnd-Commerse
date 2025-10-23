@@ -1,7 +1,7 @@
 <template>
   <div class="kontak-page">
     <!-- Hero Section -->
-     <section class="hero">
+    <section class="hero">
       <img src="/1.png" alt="Tentang Kami" class="hero-image" />
       <div class="hero-overlay">
         <h1>TENTANG KAMI</h1>
@@ -33,7 +33,6 @@
           <ul>
             <li>📞 +62 811-2800-181</li>
             <li>📧 marketing@phytomed.co.id</li>
-            <!-- <li>🌐 <a href="https://www.facebook.com/" target="_blank">Halaman Facebook Kami</a></li> -->
           </ul>
         </div>
       </div>
@@ -45,16 +44,15 @@
         <div class="kunjungi-kami">
           <h2>Kunjungi Kami</h2>
           <p><strong>Alamat Pabrik:</strong><br>
-            📍 Jl. Gawok No. 7, Dusun , Geneng, Kec . Gatak, Kabupaten Sukoharjo, Jawa Tengah 57557
+            📍 Jl. Gawok No. 7, Geneng, Kec. Gatak, Kabupaten Sukoharjo, Jawa Tengah 57557
           </p>
-          <p><strong>Jam Kerja:</strong><br>
-            <li>
-            🕓 Senin - Jumat, 08:00 - 17:00 WIB
-            </li>
-            <li>
-            🕓 Sabtu        , 08:00 - 12:00 WIB
-            </li>
-          </p>
+         <div class="jam-kerja">
+          <strong>Jam Kerja:</strong><br />
+          <ul>
+            <li>🕓 Senin - Jumat, 08:00 - 17:00 WIB</li>
+            <li>🕓 Sabtu, 08:00 - 12:00 WIB</li>
+          </ul>
+        </div>
         </div>
         <div class="map">
           <iframe
@@ -62,7 +60,6 @@
             width="100%"
             height="320"
             style="border:0;"
-            
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
@@ -76,14 +73,14 @@
 .kontak-page {
   font-family: "Poppins", sans-serif;
   color: #333;
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 
 /* === Hero Section === */
 .hero {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
 }
 
@@ -91,7 +88,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(60%);
+  filter: brightness(55%) contrast(1.1);
 }
 
 .hero-overlay {
@@ -105,6 +102,7 @@
   color: #fff;
   font-size: 2.5rem;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
 /* === Kirim Pesan & Hubungi Kami === */
@@ -122,14 +120,19 @@
 
 /* Kotak putih (form) */
 .card-form {
-  background: white;
+  background: #ffffff;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s;
+}
+
+.card-form:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .card-form h2 {
-  color: #2e7d32;
+  color: #1b5e20;
   margin-bottom: 8px;
   font-size: 1.4rem;
 }
@@ -137,6 +140,7 @@
 .card-form p {
   margin-bottom: 15px;
   font-size: 0.95rem;
+  color: #555;
 }
 
 .card-form form {
@@ -152,40 +156,41 @@
   border-radius: 8px;
   outline: none;
   font-size: 15px;
+  background: #fafafa;
+  transition: border-color 0.3s, background 0.3s;
 }
 
 .card-form input:focus,
 .card-form textarea:focus {
-  border-color: #2e7d32;
+  border-color: #1b5e20;
+  background: #fff;
 }
 
 .card-form button {
-  background: #1b1b1b;
+  background: #2e7d32;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: background 0.3s;
 }
 
 .card-form button:hover {
-  background: #2e7d32;
+  background: #256028;
 }
 
 /* Hubungi Kami */
-.hubungi-kami {
-  padding-top: 10px;
-}
-
 .hubungi-kami h2 {
-  color: #2e7d32;
+  color: #1b5e20;
   margin-bottom: 10px;
 }
 
 .hubungi-kami p {
   font-size: 0.95rem;
   margin-bottom: 12px;
+  color: #444;
 }
 
 .hubungi-kami ul {
@@ -196,15 +201,6 @@
 .hubungi-kami li {
   margin-bottom: 10px;
   font-size: 15px;
-}
-
-.hubungi-kami a {
-  color: #2e7d32;
-  text-decoration: none;
-}
-
-.hubungi-kami a:hover {
-  text-decoration: underline;
 }
 
 /* === Kunjungi Kami & Map === */
@@ -221,14 +217,24 @@
 }
 
 .kunjungi-kami h2 {
-  color: #2e7d32;
+  color: #1b5e20;
   margin-bottom: 12px;
 }
 
 .kunjungi-kami p {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   line-height: 1.6;
   font-size: 0.95rem;
+  color: #444;
+}
+
+.kunjungi-kami ul {
+  list-style: none;
+  padding: 0;
+}
+
+.kunjungi-kami li {
+  margin-bottom: 6px;
 }
 
 .map iframe {
@@ -243,17 +249,12 @@
     grid-template-columns: 1fr;
   }
 
-  .hero-kontak {
-    height: 35vh;
-    padding: 60px 15px;
+  .hero {
+    height: 180px;
   }
 
-  .hero-kontak h1 {
-    font-size: 30px;
-  }
-
-  .hero-kontak p {
-    font-size: 14px;
+  .hero-overlay h1 {
+    font-size: 1.8rem;
   }
 }
 </style>

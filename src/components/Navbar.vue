@@ -18,6 +18,7 @@
         <li><router-link to="/shop" class="nav-item" exact>Shop</router-link></li>
         <li><router-link to="/tentangkami" class="nav-item" exact>Tentang Kami</router-link></li>
         <li><router-link to="/Contact" class="nav-item" exact>Kontak Kami</router-link></li>
+        <li><router-link to="/artikel" class="nav-item" exact>Artikel</router-link></li>
       </ul>
 
       <!-- Toggle Menu (Hanya tampil di mobile) -->
@@ -142,7 +143,7 @@ onBeforeUnmount(() => {
   list-style: none;
   gap: 1.5rem;
   position: absolute;
-  left: 50%;
+  left: 60%;
   transform: translateX(-50%);
 }
 

@@ -27,16 +27,16 @@
           <h2 class="title">{{ product.nama_barang }}</h2>
 
           <ul class="detail-list">
-            <li><strong>Merek:</strong> Dua Naga Kosmetindo</li>
-            <li><strong>Tekstur:</strong> {{ product.tekstur || "Krim ringan, tidak lengket" }}</li>
-            <li><strong>Tipe kulit:</strong> {{ product.tipe_kulit || "Semua jenis kulit" }}</li>
-            <li><strong>Digunakan untuk:</strong> {{ product.kegunaan || "Wajah dan tubuh" }}</li>
-            <li><strong>Bahan utama:</strong> {{ product.bahan_utama || "-" }}</li>
+            <li><strong>Merek:</strong> PHYTOMED NEO FARMA</li>
+            <li><strong>Digunakan untuk:</strong> {{ product.kegunaan || "Kesehatan" }}</li>
+            <li><strong>Bahan utama:</strong> {{ product.bahan_utama || "Bahan alami dari alam" }}</li>
           </ul>
 
+          <!-- === Deskripsi dari Quill === -->
           <div class="desc-section">
             <h4>Manfaat:</h4>
-            <p>{{ product.deskripsi || "Deskripsi belum tersedia." }}</p>
+            <!-- render HTML hasil Quill -->
+            <div class="quill-content" v-html="product.deskripsi || '<p>Deskripsi belum tersedia.</p>'"></div>
           </div>
 
           <button class="btn-offer" @click="showModal = true">Dapatkan Penawaran</button>
@@ -105,21 +105,14 @@ const submitForm = () => {
 }
 </script>
 
-
 <style scoped>
-.product-page {
-  background: #fff;
-  min-height: 100vh;
-  padding: 0;
-}
-
 /* === HERO SECTION === */
 .hero-banner {
   position: relative;
   width: 100%;
   height: 45vh;
   overflow: hidden;
-  margin-top: -80px; 
+  margin-top: -80px;
   z-index: 1;
 }
 
@@ -151,18 +144,6 @@ const submitForm = () => {
 }
 
 /* === DETAIL PRODUK === */
-.product-detail {
-  padding: 60px 80px 50px;
-  background: #fff;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  z-index: 2;
-  position: relative;
-}
-
-
-/* DETAIL PRODUK */
 .product-detail {
   padding: 70px 80px 50px;
   display: flex;
@@ -225,6 +206,7 @@ const submitForm = () => {
   font-size: 13px;
 }
 
+/* === Deskripsi dari Quill === */
 .desc-section {
   margin-top: 15px;
 }
@@ -234,12 +216,47 @@ const submitForm = () => {
   margin-bottom: 5px;
 }
 
-.desc-section p {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #555;
+.quill-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #444;
+  text-align: justify;
 }
 
+/* Format dasar dari Quill */
+.quill-content strong {
+  font-weight: bold;
+}
+.quill-content em {
+  font-style: italic;
+}
+.quill-content u {
+  text-decoration: underline;
+}
+.quill-content ol,
+.quill-content ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.quill-content li {
+  margin-bottom: 0.3rem;
+}
+.quill-content a {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+.quill-content a:hover {
+  color: #c19b2e;
+}
+.quill-content img {
+  display: block;
+  margin: 1rem auto;
+  max-width: 250px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tombol */
 .btn-offer {
   background: #1e1e1e;
   color: #fff;
@@ -257,7 +274,7 @@ const submitForm = () => {
   background: #28a745;
 }
 
-/* MODAL */
+/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -322,13 +339,6 @@ const submitForm = () => {
 
 .submit-btn:hover {
   background: #c19b2e;
-}
-
-.loading {
-  text-align: center;
-  padding: 100px;
-  font-size: 16px;
-  color: #555;
 }
 
 /* RESPONSIVE */
