@@ -42,14 +42,13 @@ onMounted(async () => {
   }
 });
 
-// Hapus semua tag HTML dari isi artikel
 const stripHtml = (html) => {
   const div = document.createElement("div");
   div.innerHTML = html;
   return div.textContent || div.innerText || "";
 };
 
-// Potong isi artikel agar hanya tampil sebagian
+
 const potongIsi = (isi) => {
   if (!isi) return "Tidak ada deskripsi";
   return isi.length > 100 ? isi.substring(0, 100) + "..." : isi;

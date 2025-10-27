@@ -79,19 +79,24 @@
       </div>
     </section>
 
-    <!-- FAQ + Form Section -->
+ 
+    <!-- FAQ + FORM -->
     <section class="faq-form-section">
       <div class="faq-form-container">
         <!-- Form -->
         <div class="form-box">
           <h3>Kirimkan pesan kepada kami</h3>
-          <form>
-            <input type="text" placeholder="Nama" />
-            <input type="email" placeholder="E-mail" />
-            <input type="text" placeholder="No Whatsapp" />
-            <textarea rows="4" placeholder="Pesan"></textarea>
-            <button type="submit">Kirim</button>
+          <form @submit.prevent="kirimPesan">
+            <input v-model="form.nama" type="text" placeholder="Nama" required />
+            <input v-model="form.email" type="email" placeholder="E-mail" required />
+            <input v-model="form.telepon" type="text" placeholder="No Whatsapp" />
+            <textarea v-model="form.pesan" rows="4" placeholder="Pesan" required></textarea>
+            <button type="submit" :disabled="loading">
+              {{ loading ? "Mengirim..." : "Kirim" }}
+            </button>
           </form>
+          <p v-if="successMessage" class="success">{{ successMessage }}</p>
+          <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         </div>
 
         <!-- FAQ -->
@@ -156,10 +161,41 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/api/pesan";
 
 const activeFaq = ref(null);
 const toggleFaq = (index) => {
   activeFaq.value = activeFaq.value === index ? null : index;
+};
+
+const form = ref({
+  nama: "",
+  email: "",
+  telepon: "",
+  pesan: "",
+});
+const loading = ref(false);
+const successMessage = ref("");
+const errorMessage = ref("");
+
+// 🔹 Fungsi kirim pesan
+const kirimPesan = async () => {
+  successMessage.value = "";
+  errorMessage.value = "";
+  loading.value = true;
+
+  try {
+    const res = await axios.post(API_URL, form.value);
+    successMessage.value = res.data.message || "Pesan berhasil dikirim!";
+    form.value = { nama: "", email: "", telepon: "", pesan: "" };
+  } catch (err) {
+    errorMessage.value = "Gagal mengirim pesan. Coba lagi nanti.";
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const faqs = [
@@ -569,6 +605,16 @@ const faqs = [
   font-size: 15px;
   color: #333;
   line-height: 1.5;
+}
+.success {
+  color: green;
+  margin-top: 10px;
+  font-weight: 500;
+}
+.error {
+  color: red;
+  margin-top: 10px;
+  font-weight: 500;
 }
 
 </style>

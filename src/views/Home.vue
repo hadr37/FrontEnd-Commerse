@@ -15,7 +15,7 @@
             dengan teliti dan diproses menggunakan teknologi 
             modern untuk memastikan produk akhir tidak hanya berkualitas tinggi,
             tetapi juga aman dan efektif untuk menunjang kesehatan Anda secara alami."</p>
-        <button class="btn-hero">Belanja Sekarang</button>
+        <router-link to="/shop" class="btn-hero">Belanja Sekarang</router-link>
       </div>
     </section>
 
@@ -203,6 +203,7 @@ const services = ref([
   }
 
 ])
+
 </script>
 
 <style scoped>
@@ -253,17 +254,19 @@ const services = ref([
 
 .btn-hero {
   background-color: #008037;
-  color: black;
+  color: #fff;
   padding: 12px 30px;
   font-size: 1rem;
   border: none;
   border-radius: 30px;
+  text-decoration: none;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .btn-hero:hover {
-  background-color: #fff;
+  background-color: #07a82a;
+   color: #000000f7;
 }
 
 

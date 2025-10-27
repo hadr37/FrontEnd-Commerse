@@ -2,26 +2,32 @@
   <div class="kontak-page">
     <!-- Hero Section -->
     <section class="hero">
-      <img src="/1.png" alt="Tentang Kami" class="hero-image" />
+      <img src="/1.png" alt="Kontak" class="hero-image" />
       <div class="hero-overlay">
-        <h1>TENTANG KAMI</h1>
+        <h1>KONTAK</h1>
       </div>
     </section>
 
-    <!-- Kirim Pesan & Hubungi Kami -->
+    <!-- Form & Kontak -->
     <section class="kontak-section">
       <div class="kontak-grid">
         <!-- Kirim Pesan -->
         <div class="card-form">
           <h2>Kirimkan Pesan</h2>
           <p>Kirimkan pesan kepada kami di bawah dan kami akan menghubungi Anda sesegera mungkin!</p>
-          <form>
-            <input type="text" placeholder="Nama Lengkap" required />
-            <input type="email" placeholder="Alamat Email" required />
-            <input type="text" placeholder="No Telepon" required />
-            <textarea rows="4" placeholder="Pesan Anda..." required></textarea>
-            <button type="submit">Kirim Pesan</button>
+
+          <form @submit.prevent="kirimPesan">
+            <input v-model="form.nama" type="text" placeholder="Nama Lengkap" required />
+            <input v-model="form.email" type="email" placeholder="Alamat Email" required />
+            <input v-model="form.telepon" type="text" placeholder="No Whatsapp" required />
+            <textarea v-model="form.pesan" rows="4" placeholder="Pesan Anda..." required></textarea>
+            <button type="submit" :disabled="loading">
+              {{ loading ? 'Mengirim...' : 'Kirim Pesan' }}
+            </button>
           </form>
+
+          <p v-if="successMessage" class="success">{{ successMessage }}</p>
+          <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         </div>
 
         <!-- Hubungi Kami -->
@@ -38,22 +44,23 @@
       </div>
     </section>
 
-    <!-- Kunjungi Kami & Map -->
+    <!-- Lokasi -->
     <section class="lokasi-section">
       <div class="lokasi-grid">
         <div class="kunjungi-kami">
           <h2>Kunjungi Kami</h2>
-          <p><strong>Alamat Pabrik:</strong><br>
+          <p><strong>Alamat Pabrik:</strong><br />
             📍 Jl. Gawok No. 7, Geneng, Kec. Gatak, Kabupaten Sukoharjo, Jawa Tengah 57557
           </p>
-         <div class="jam-kerja">
-          <strong>Jam Kerja:</strong><br />
-          <ul>
-            <li>🕓 Senin - Jumat, 08:00 - 17:00 WIB</li>
-            <li>🕓 Sabtu, 08:00 - 12:00 WIB</li>
-          </ul>
+          <div class="jam-kerja">
+            <strong>Jam Kerja:</strong><br />
+            <ul>
+              <li>🕓 Senin - Jumat, 08:00 - 17:00 WIB</li>
+              <li>🕓 Sabtu, 08:00 - 12:00 WIB</li>
+            </ul>
+          </div>
         </div>
-        </div>
+
         <div class="map">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.396146580888!2d110.737027!3d-7.313020199999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a14d95b7a8e5f%3A0xa5c935f8dd4228cb!2sDua%20Naga%20Kosmetindo!5e0!3m2!1sid!2sid!4v1692265678934!5m2!1sid!2sid"
@@ -61,13 +68,47 @@
             height="320"
             style="border:0;"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
       </div>
     </section>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+
+const form = ref({
+  nama: '',
+  email: '',
+  telepon: '',
+  pesan: ''
+})
+
+const loading = ref(false)
+const successMessage = ref('')
+const errorMessage = ref('')
+
+// Kirim data ke backend Laravel (endpoint: /api/pesan)
+const kirimPesan = async () => {
+  loading.value = true
+  successMessage.value = ''
+  errorMessage.value = ''
+
+  try {
+    await axios.post('http://localhost:8000/api/pesan', form.value)
+
+    successMessage.value = 'Pesan berhasil dikirim! Kami akan menghubungi Anda sesegera mungkin.'
+    form.value = { nama: '', email: '', telepon: '', pesan: '' }
+  } catch (error) {
+    console.error('Error mengirim pesan:', error)
+    errorMessage.value = 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.'
+  } finally {
+    loading.value = false
+  }
+}
+</script>
 
 <style scoped>
 .kontak-page {
@@ -105,7 +146,7 @@
   letter-spacing: 1px;
 }
 
-/* === Kirim Pesan & Hubungi Kami === */
+/* === Form & Hubungi Kami === */
 .kontak-section {
   max-width: 1100px;
   margin: 60px auto;
@@ -118,17 +159,12 @@
   gap: 35px;
 }
 
-/* Kotak putih (form) */
+/* Card Form */
 .card-form {
   background: #ffffff;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s;
-}
-
-.card-form:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .card-form h2 {
@@ -154,7 +190,6 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  outline: none;
   font-size: 15px;
   background: #fafafa;
   transition: border-color 0.3s, background 0.3s;
@@ -181,6 +216,24 @@
   background: #256028;
 }
 
+.success {
+  color: #2e7d32;
+  background: #e8f5e9;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #c62828;
+  background: #ffebee;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
 /* Hubungi Kami */
 .hubungi-kami h2 {
   color: #1b5e20;
@@ -203,7 +256,7 @@
   font-size: 15px;
 }
 
-/* === Kunjungi Kami & Map === */
+/* === Lokasi === */
 .lokasi-section {
   max-width: 1100px;
   margin: 50px auto 80px;
@@ -226,15 +279,6 @@
   line-height: 1.6;
   font-size: 0.95rem;
   color: #444;
-}
-
-.kunjungi-kami ul {
-  list-style: none;
-  padding: 0;
-}
-
-.kunjungi-kami li {
-  margin-bottom: 6px;
 }
 
 .map iframe {

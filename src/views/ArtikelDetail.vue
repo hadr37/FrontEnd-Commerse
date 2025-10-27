@@ -8,33 +8,61 @@
       </div>
     </section>
 
-    <!-- Konten Artikel -->
-    <div class="container">
-      <div class="header">
-        <h1>{{ artikel.judul }}</h1>
-        <p class="date">{{ formatDate(artikel.created_at) }}</p>
+    <!-- Konten Utama -->
+    <div class="content-wrapper">
+      <!-- Kolom Kiri: Artikel -->
+      <div class="left-content">
+        <div class="header">
+          <h1>{{ artikel.judul }}</h1>
+          <p class="date">{{ formatDate(artikel.created_at) }}</p>
+        </div>
+
+        <img
+          v-if="artikel.cover"
+          :src="`http://localhost:8000/storage/${artikel.cover}`"
+          alt="Gambar Artikel"
+          class="cover"
+        />
+
+        <div class="content" v-html="artikel.isi"></div>
       </div>
 
-      <img
-        v-if="artikel.cover"
-        :src="`http://localhost:8000/storage/${artikel.cover}`"
-        alt="Gambar Artikel"
-        class="cover"
-      />
-
-      <!-- Isi artikel -->
-      <div class="content" v-html="artikel.isi"></div>
+      <!-- Kolom Kanan: Artikel Terbaru -->
+      <div class="right-sidebar">
+        <h2>Artikel Terbaru</h2>
+        <div v-if="artikelTerbaru.length">
+          <div
+            class="artikel-item"
+            v-for="item in artikelTerbaru"
+            :key="item.id"
+            @click="bukaArtikel(item.slug)"
+          >
+            <img
+              v-if="item.cover"
+              :src="`http://localhost:8000/storage/${item.cover}`"
+              alt="cover"
+            />
+            <div class="info">
+              <h3>{{ item.judul }}</h3>
+              <p>{{ formatDate(item.created_at) }}</p>
+            </div>
+          </div>
+        </div>
+        <p v-else>Tidak ada artikel terbaru.</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue"
 import axios from "axios"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 const route = useRoute()
+const router = useRouter()
 const artikel = ref(null)
+const artikelTerbaru = ref([])
 
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("id-ID", {
@@ -43,7 +71,7 @@ const formatDate = (date) =>
     year: "numeric",
   })
 
-onMounted(async () => {
+const getArtikel = async () => {
   try {
     const slug = route.params.slug
     const res = await axios.get(`http://localhost:8000/api/artikel/${slug}`)
@@ -51,7 +79,33 @@ onMounted(async () => {
   } catch (err) {
     console.error("Gagal memuat artikel:", err)
   }
+}
+
+const getArtikelTerbaru = async () => {
+  try {
+    const res = await axios.get("http://localhost:8000/api/artikel?limit=5")
+    artikelTerbaru.value = res.data.data || res.data
+  } catch (err) {
+    console.error("Gagal memuat artikel terbaru:", err)
+  }
+}
+
+const bukaArtikel = (slug) => {
+  router.push(`/artikel/${slug}`)
+}
+
+onMounted(() => {
+  getArtikel()
+  getArtikelTerbaru()
 })
+
+// Jika berpindah artikel, data di-refresh
+watch(
+  () => route.params.slug,
+  () => {
+    getArtikel()
+  }
+)
 </script>
 
 <style scoped>
@@ -83,16 +137,26 @@ onMounted(async () => {
   color: #fff;
   font-size: 2.5rem;
   font-weight: 700;
-  letter-spacing: 1px;
 }
 
-/* === Konten Artikel === */
-.container {
-  max-width: 900px;
+/* === Wrapper Dua Kolom === */
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
   margin: 0 auto;
+  gap: 2rem;
   padding: 0 2rem 4rem;
+}
+
+/* Kolom kiri (artikel utama) */
+.left-content {
+  flex: 3;
   background: #fff;
   border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header {
@@ -109,7 +173,6 @@ onMounted(async () => {
 .date {
   color: #777;
   font-size: 0.9rem;
-  margin-top: 0.3rem;
 }
 
 .cover {
@@ -127,69 +190,71 @@ onMounted(async () => {
   text-align: justify;
 }
 
-/* Elemen dalam artikel */
-.content p {
-  margin-bottom: 1rem;
-}
-
-.content strong {
-  font-weight: bold;
-  color: #000;
-}
-
-.content em {
-  font-style: italic;
-}
-
-.content u {
-  text-decoration: underline;
-}
-
-.content ul,
-.content ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.content li {
-  margin-bottom: 0.4rem;
-}
-
-.content a {
-  color: #0d6efd;
-  text-decoration: underline;
-}
-
-.content a:hover {
-  color: #c89c36;
-}
-
-/* === Gambar di dalam isi artikel === */
 .content :deep(img) {
-  display: block !important;
-  margin: 0 auto 1rem 0 !important; 
-  width: 200px !important;         
-  height: auto !important;
-  border-radius: 10px !important;
-  object-fit: cover !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  display: block;
+  margin: 1rem auto;
+  width: 200px;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
-/* Biar teks mulai di bawah gambar, tidak di samping */
-.content p {
-  clear: both;
-  text-align: justify;
-  line-height: 1.8;
-  color: #444;
+/* Kolom kanan (sidebar artikel terbaru) */
+.right-sidebar {
+  flex: 1;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: fit-content;
+}
+
+.right-sidebar h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
   margin-bottom: 1rem;
+  border-bottom: 2px solid #c89c36;
+  padding-bottom: 0.5rem;
 }
 
-/* Responsif untuk layar kecil */
-@media (max-width: 768px) {
-  .content :deep(img) {
-    width: 100% !important;
-    max-width: 250px !important;
-    margin: 0 auto 1rem auto !important;
+.artikel-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.artikel-item:hover {
+  transform: translateY(-3px);
+}
+
+.artikel-item img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.artikel-item .info h3 {
+  font-size: 0.95rem;
+  color: #222;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.artikel-item .info p {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* Responsif */
+@media (max-width: 900px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+
+  .right-sidebar {
+    width: 100%;
   }
 }
 </style>
