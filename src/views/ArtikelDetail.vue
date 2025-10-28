@@ -1,5 +1,5 @@
 <template>
-  <div class="artikel-detail" v-if="artikel">
+  <div class="artikel-detail">
     <!-- Hero Section -->
     <section class="hero">
       <img src="/3.png" alt="Artikel" class="hero-image" />
@@ -8,8 +8,38 @@
       </div>
     </section>
 
-    <!-- Konten Utama -->
-    <div class="content-wrapper">
+    <!-- Loading Skeleton -->
+    <div v-if="!artikel" class="content-wrapper">
+      <!-- Skeleton Left Content -->
+      <div class="left-content">
+        <div class="header">
+          <div class="skeleton-line skeleton-title-large"></div>
+          <div class="skeleton-line skeleton-date"></div>
+        </div>
+        <div class="skeleton-cover"></div>
+        <div class="content">
+          <div class="skeleton-line skeleton-paragraph"></div>
+          <div class="skeleton-line skeleton-paragraph"></div>
+          <div class="skeleton-line skeleton-paragraph"></div>
+          <div class="skeleton-line skeleton-paragraph short"></div>
+        </div>
+      </div>
+
+      <!-- Skeleton Sidebar -->
+      <div class="right-sidebar">
+        <h2>Artikel Terbaru</h2>
+        <div v-for="n in 3" :key="n" class="artikel-item skeleton-item">
+          <div class="skeleton-image-small"></div>
+          <div class="info">
+            <div class="skeleton-line skeleton-title-small"></div>
+            <div class="skeleton-line skeleton-date-small"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real Content -->
+    <div v-else class="content-wrapper">
       <!-- Kolom Kiri: Artikel -->
       <div class="left-content">
         <div class="header">
@@ -256,5 +286,96 @@ watch(
   .right-sidebar {
     width: 100%;
   }
+}
+
+/* SKELETON LOADING */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.skeleton-title-large {
+  width: 90%;
+  height: 28px;
+  margin: 0 auto 10px;
+}
+
+.skeleton-date {
+  width: 40%;
+  height: 14px;
+  margin: 0 auto;
+}
+
+.skeleton-cover {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.skeleton-paragraph {
+  width: 100%;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.skeleton-paragraph.short {
+  width: 70%;
+}
+
+.skeleton-item {
+  pointer-events: none;
+  cursor: default;
+}
+
+.skeleton-image-small {
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-title-small {
+  width: 100%;
+  height: 14px;
+  margin-bottom: 8px;
+}
+
+.skeleton-date-small {
+  width: 60%;
+  height: 12px;
 }
 </style>

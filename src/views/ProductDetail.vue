@@ -1,23 +1,52 @@
 <template>
   <div>
-    <!-- Hero Banner -->
-    <section class="hero-banner">
-      <img src="/banner-tengah.png" alt="Banner" class="hero-image" />
-      <div class="overlay"></div>
-      <div class="hero-text">
-        <h1>Detail Produk</h1>
-      </div>
-    </section>
+    <!-- === Loading State === -->
+    <div v-if="!product">
+      <!-- Hero section for loading -->
+      <section class="hero-banner">
+        <img src="/banner-tengah.png" alt="Banner" class="hero-image" />
+        <div class="overlay"></div>
+        <div class="hero-text">
+          <h1>Detail Produk</h1>
+        </div>
+      </section>
 
-    <!-- Konten Produk -->
-    <div v-if="product" class="product-detail">
+      <!-- Skeleton loading -->
+      <div class="product-detail">
+        <div class="content">
+          <!-- Skeleton Image -->
+          <div class="image-section">
+            <div class="skeleton-image-large"></div>
+          </div>
+
+          <!-- Skeleton Info -->
+          <div class="info-section">
+            <div class="skeleton-line skeleton-category"></div>
+            <div class="skeleton-line skeleton-title-large"></div>
+            <div class="skeleton-line skeleton-info"></div>
+            <div class="skeleton-line skeleton-info"></div>
+            <div class="skeleton-line skeleton-info short"></div>
+            <div class="skeleton-button-large"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === Konten Lengkap (Hero + Detail) === -->
+    <div v-else>
+      <!-- === Hero Banner === -->
+      <section class="hero-banner">
+        <img src="/banner-tengah.png" alt="Banner" class="hero-image" />
+        <div class="overlay"></div>
+        <div class="hero-text">
+          <h1>Detail Produk</h1>
+        </div>
+      </section>
+      <div class="product-detail">
       <div class="content">
-        <!-- Gambar Produk -->
         <div class="image-section">
           <img :src="getImage(product.gambar)" alt="Gambar Produk" />
         </div>
-
-        <!-- Detail Produk -->
         <div class="info-section">
           <p class="category">
             Kategori:
@@ -31,19 +60,19 @@
             <li><strong>Digunakan untuk:</strong> {{ product.kegunaan || "Kesehatan" }}</li>
             <li><strong>Bahan utama:</strong> {{ product.bahan_utama || "Bahan alami dari alam" }}</li>
           </ul>
-
-          <!-- === Deskripsi dari Quill === -->
+            
           <div class="desc-section">
             <h4>Manfaat:</h4>
-            <!-- render HTML hasil Quill -->
-            <div class="quill-content" v-html="product.deskripsi || '<p>Deskripsi belum tersedia.</p>'"></div>
+            <div
+              class="quill-content"
+              v-html="product.deskripsi || '<p>Deskripsi belum tersedia.</p>'"
+            ></div>
           </div>
 
           <button class="btn-offer" @click="showModal = true">Dapatkan Penawaran</button>
         </div>
       </div>
 
-      <!-- Popup Form -->
       <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
         <div class="modal">
           <div class="modal-header">
@@ -60,9 +89,8 @@
           </form>
         </div>
       </div>
+      </div>
     </div>
-
-    <div v-else class="loading">Memuat detail produk...</div>
   </div>
 </template>
 
@@ -88,6 +116,7 @@ const getImage = (path) => {
   return `http://localhost:8000/storage/${path}`
 }
 
+// Ambil data produk berdasarkan ID
 onMounted(async () => {
   try {
     const res = await axios.get(`http://localhost:8000/api/barang/${route.params.id}`)
@@ -98,15 +127,27 @@ onMounted(async () => {
   }
 })
 
-const submitForm = () => {
-  alert(`Terima kasih, ${form.value.nama}! Pesan kamu telah dikirim.`)
-  showModal.value = false
-  form.value = { nama: "", email: "", telepon: "", pesan: "" }
+// Kirim form penawaran
+const submitForm = async () => {
+  try {
+    await axios.post("http://localhost:8000/api/penawarans", {
+      barang_id: product.value.id,
+      nama: form.value.nama,
+      email: form.value.email,
+      telepon: form.value.telepon,
+      pesan: form.value.pesan,
+    })
+    alert(`Terima kasih, ${form.value.nama}! Pesan kamu telah dikirim.`)
+    showModal.value = false
+    form.value = { nama: "", email: "", telepon: "", pesan: "" }
+  } catch (error) {
+    console.error("Gagal mengirim penawaran:", error)
+    alert("Terjadi kesalahan saat mengirim penawaran.")
+  }
 }
 </script>
 
 <style scoped>
-/* === HERO SECTION === */
 .hero-banner {
   position: relative;
   width: 100%;
@@ -143,7 +184,6 @@ const submitForm = () => {
   font-weight: 700;
 }
 
-/* === DETAIL PRODUK === */
 .product-detail {
   padding: 70px 80px 50px;
   display: flex;
@@ -206,7 +246,6 @@ const submitForm = () => {
   font-size: 13px;
 }
 
-/* === Deskripsi dari Quill === */
 .desc-section {
   margin-top: 15px;
 }
@@ -223,7 +262,6 @@ const submitForm = () => {
   text-align: justify;
 }
 
-/* Format dasar dari Quill */
 .quill-content strong {
   font-weight: bold;
 }
@@ -256,7 +294,6 @@ const submitForm = () => {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Tombol */
 .btn-offer {
   background: #1e1e1e;
   color: #fff;
@@ -274,7 +311,7 @@ const submitForm = () => {
   background: #28a745;
 }
 
-/* Modal */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -341,7 +378,80 @@ const submitForm = () => {
   background: #c19b2e;
 }
 
-/* RESPONSIVE */
+/* === SKELETON LOADING === */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton-image-large {
+  width: 90%;
+  max-width: 350px;
+  height: 300px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 10px;
+}
+
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.skeleton-category {
+  width: 40%;
+  height: 14px;
+}
+
+.skeleton-title-large {
+  width: 90%;
+  height: 24px;
+}
+
+.skeleton-info {
+  width: 100%;
+  height: 16px;
+}
+
+.skeleton-info.short {
+  width: 60%;
+}
+
+.skeleton-button-large {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 6px;
+  width: 180px;
+  height: 40px;
+  margin-top: 20px;
+}
+
+
 @media (max-width: 768px) {
   .product-detail {
     padding: 40px 20px 30px;
@@ -361,7 +471,7 @@ const submitForm = () => {
     margin-top: 15px;
   }
 
-  .hero-overlay h1 {
+  .hero-text h1 {
     font-size: 2rem;
   }
 }

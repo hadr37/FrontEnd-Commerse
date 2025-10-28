@@ -282,7 +282,7 @@ const faqs = [
 .underline {
   width: 60px;
   height: 4px;
-  background: #f5c518;
+  background: #1b5e20;
   margin: 0 auto 40px;
   border-radius: 2px;
 }
@@ -362,7 +362,7 @@ const faqs = [
 }
 
 .alasan-stats h3 {
-  color: #f5c518;
+  color: #1b5e20;
   font-size: 2rem;
 }
 
@@ -402,7 +402,7 @@ const faqs = [
 
 .form-box button {
   width: 100%;
-  background: #f5c518;
+  background: #1b5e20;
   border: none;
   color: #fff;
   padding: 12px;

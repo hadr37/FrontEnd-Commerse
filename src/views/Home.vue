@@ -1,14 +1,10 @@
 <template>
   <div class="home">
-    <!-- HERO SECTION -->
     <section class="hero">
-      <!-- Video background -->
       <video autoplay muted loop playsinline class="hero-video">
         <source src="/maincover.mp4" type="video/mp4" />
         Browser tidak mendukung video.
       </video>
-
-      <!-- Teks di tengah -->
       <div class="hero-content">
         <h1>Pabrik Herbal Berkualitas</h1>
         <p>"Di pabrik herbal kami, setiap bahan alami dipilih 
@@ -18,8 +14,6 @@
         <router-link to="/shop" class="btn-hero">Belanja Sekarang</router-link>
       </div>
     </section>
-
-        <!-- LAYANAN KUSTOM -->
     <section class="services">
       <h2>Layanan Kami</h2>
       <div class="underline"></div>
@@ -60,13 +54,10 @@
 
 <section class="alasan-section">
   <div class="alasan-container">
-    <!-- Gambar kiri -->
     <div class="alasan-images">
       <img src="/1.png" alt="Gedung Dua Naga" />
       <img src="/2.png" alt="Tim Produksi Dua Naga" />
     </div>
-
-    <!-- Konten kanan -->
     <div class="alasan-content">
       <h2>ALASAN MEMILIH PHYTOMED</h2>
       <p>
@@ -125,7 +116,6 @@
     </div>
   </div>
 </section>
-  <!-- === CLIENT KAMI (CAROUSEL) === -->
     <section class="client-section">
       <div class="client-container">
         <div class="client-text">
@@ -157,49 +147,49 @@ const services = ref([
     id: 1,
     title: "Formulasi Kustom",
     text: "Rancang produk yang paling cocok untuk merek Anda dengan formulasi perawatan kulit yang disesuaikan secara spesifik.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M12 2C6.477 2 2 6.477 2 12c0 2.22.808 4.26 2.144 5.852L12 22l7.856-4.148A9.956 9.956 0 0 0 22 12c0-5.523-4.477-10-10-10z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M12 2C6.477 2 2 6.477 2 12c0 2.22.808 4.26 2.144 5.852L12 22l7.856-4.148A9.956 9.956 0 0 0 22 12c0-5.523-4.477-10-10-10z'/></svg>`,
   },
   {
     id: 2,
     title: "Kemasan Kustom",
     text: "Pilih dari berbagai pilihan botol, tutup, tabung, penutup, dan desain kotak untuk kebutuhan kemasan merek Anda.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M12 2 2 7l10 5 10-5-10-5zm0 7L2 14l10 5 10-5-10-5z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M12 2 2 7l10 5 10-5-10-5zm0 7L2 14l10 5 10-5-10-5z'/></svg>`,
   },
   {
     id: 3,
     title: "Sampel",
     text: "Program sampel unik kami memungkinkan Anda membuat sampel formulasi dan kemasan kustom untuk uji coba.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M7 2v2h2v4H7v2h10V8h-2V4h2V2H7zm2 8v12h6V10H9z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M7 2v2h2v4H7v2h10V8h-2V4h2V2H7zm2 8v12h6V10H9z'/></svg>`,
   },
   {
     id: 4,
     title: "Kepuasan Pelanggan",
     text: "Kami membantu membangun merek Anda dan menciptakan kerja sama saling menguntungkan untuk jangka panjang.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M2 3h20v14H6l-4 4V3z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M2 3h20v14H6l-4 4V3z'/></svg>`,
   },
    {
     id: 5,
     title: "Solusi Terpadu",
     text: "Ciptakan produk yang paling sesuai dengan merek Anda melalui formulasi perawatan kulit kustom yang dirancang khusus.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'/></svg>`,
   },
   {
     id: 6,
     title: "Label Pribadi",
     text: "Mulai dengan cepat menggunakan label pribadi. Kami menyediakan berbagai formula stok yang dapat Anda pilih. Cukup tambahkan logo, label, dan pilih kemasan kustom sesuai keinginan.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M3 3h18v2H3V3zm0 4h18v14H3V7zm2 2v10h14V9H5z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M3 3h18v2H3V3zm0 4h18v14H3V7zm2 2v10h14V9H5z'/></svg>`,
   },
   {
     id: 7,
     title: "Sertifikat yang Relevan",
     text: "GMPC, ISO 22716, BSCI, FDA, MSDS, COA, serta dapat membantu untuk mendapatkan sertifikat CPNP, CPSR, PIF, Sertifikat Penjualan Bebas, Sertifikat Asal, SASO, dan lainnya.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M12 2l4 4h-3v9H11V6H8l4-4zM5 20v2h14v-2H5z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M12 2l4 4h-3v9H11V6H8l4-4zM5 20v2h14v-2H5z'/></svg>`,
   },
   {
     id: 8,
     title: "Logistik & Pengiriman",
     text: "Dimanapun Anda berada di dunia, kami akan memproduksi kosmetik untuk Anda. Pengiriman ke seluruh dunia tersedia, Anda dapat memilih pengiriman melalui laut, kereta, atau udara.",
-    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#FFD700' viewBox='0 0 24 24'><path d='M20.92 8.58l-2.42-2.42A2 2 0 0017.17 6H6a2 2 0 00-2 2v8h2v-2h12v2h2v-4.59l.92.92 1.41-1.41L20.92 8.58zM6 10V8h11.17l1 1H6z'/></svg>`,
+    icon: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='#07a82a' viewBox='0 0 24 24'><path d='M20.92 8.58l-2.42-2.42A2 2 0 0017.17 6H6a2 2 0 00-2 2v8h2v-2h12v2h2v-4.59l.92.92 1.41-1.41L20.92 8.58zM6 10V8h11.17l1 1H6z'/></svg>`,
   }
 
 ])
@@ -207,7 +197,6 @@ const services = ref([
 </script>
 
 <style scoped>
-/* === HERO SECTION === */
 .hero {
   position: relative;
   height: 100vh;
@@ -268,9 +257,6 @@ const services = ref([
   background-color: #07a82a;
    color: #000000f7;
 }
-
-
-/* === CATEGORIES === */
 .categories {
   padding: 80px 20px;
   text-align: center;
@@ -280,7 +266,7 @@ const services = ref([
 .categories h2 {
   font-size: 2rem;
   margin-bottom: 40px;
-  color: #b8860b;
+  color: #07a82a;
 }
 
 .category-list {
@@ -293,7 +279,7 @@ const services = ref([
 .category-card {
   background: white;
   border-radius: 15px;
-  border: 2px solid #d4af37;
+  border: 2px solid #07a82a;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 200px;
@@ -314,8 +300,6 @@ const services = ref([
   font-size: 1.1rem;
   color: #333;
 }
-
-/* === FEATURED PRODUCTS === */
 .featured {
   padding: 60px 20px;
   background: #f5f5f5;
@@ -325,7 +309,7 @@ const services = ref([
 .featured h2 {
   font-size: 2rem;
   margin-bottom: 40px;
-  color: #b8860b;
+  color: #07a82a;
 }
 
 .product-list {
@@ -338,7 +322,7 @@ const services = ref([
 .product-card {
   background: white;
   border-radius: 15px;
-  border: 1px solid #d4af37;
+  border: 1px solid #07a82a;
   padding: 20px;
   width: 220px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -361,13 +345,13 @@ const services = ref([
 }
 
 .price {
-  color: #b8860b;
+  color: #07a82a;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .btn-buy {
-  background-color: #d4af37;
+  background-color: #07a82a;
   color: black;
   border: none;
   padding: 8px 20px;
@@ -377,9 +361,8 @@ const services = ref([
 }
 
 .btn-buy:hover {
-  background-color: #ffd700;
+  background-color:#07a82a;
 }
-/* cara memulai */
 .cara-memulai {
   padding: 80px 0;
   text-align: center;
@@ -397,7 +380,7 @@ const services = ref([
   content: "";
   width: 60px;
   height: 4px;
-  background: #f5c518;
+  background: #07a82a;
   display: block;
   margin: 10px auto 0;
   border-radius: 2px;
@@ -445,7 +428,7 @@ const services = ref([
   content: "";
   width: 60px;
   height: 4px;
-  background: #f5c518;
+  background: #07a82a;
   display: block;
   margin: 10px auto 0;
   border-radius: 2px;
@@ -512,7 +495,7 @@ const services = ref([
 }
 
 .alasan-stats h3 {
-  color: #f5c518;
+  color: #07a82a;
   font-size: 2rem;
   font-weight: 800;
   margin: 0;
@@ -523,7 +506,6 @@ const services = ref([
   color: #333;
   margin: 5px 0 0;
 }
-/* === CLIENT KAMI === */
 .client-section {
   background-color: #fafafa;
   padding: 80px 60px;

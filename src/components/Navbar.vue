@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
 
 .nav-links a:hover,
 .router-link-active {
-  color: #ffd54f;
+  color: #07a82a;
 }
 
 .navbar.scrolled .nav-links a,

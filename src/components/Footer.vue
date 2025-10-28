@@ -76,9 +76,9 @@
       <div class="footer-column">
         <h3>KATEGORI POPULER</h3>
         <ul>
-          <li>Sunscreen</li>
-          <li>Face Care</li>
-          <li>Body Care</li>
+          <li>Kapsul</li>
+          <li>Serbuk Oral</li>
+          <li>Oil</li>
           <li>Lainnya</li>
         </ul>
       </div>

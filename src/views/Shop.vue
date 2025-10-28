@@ -9,7 +9,7 @@
     </section>
 
     <!-- KATEGORI LINK -->
-    <div class="category-links">
+    <div v-if="!loading" class="category-links">
       <span
         class="category-link"
         :class="{ active: selectedCategory === '' }"
@@ -29,7 +29,7 @@
     </div>
 
     <!-- SORT & SEARCH -->
-    <div class="sort-search-bar">
+    <div v-if="!loading" class="sort-search-bar">
       <div class="sort">
         <label>Urutkan:</label>
         <select v-model="sortOption" class="form-select">
@@ -50,7 +50,22 @@
     </div>
 
     <!-- PRODUK GRID -->
-    <div class="product-grid">
+    <div v-if="loading" class="product-grid">
+      <div v-for="n in 8" :key="n" class="product-card skeleton-card">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+        <div class="skeleton-footer">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div v-else class="product-grid">
       <div
         v-for="barang in sortedProducts"
         :key="barang.id"
@@ -89,7 +104,7 @@
       </div>
     </div>
 
-    <div v-if="!sortedProducts.length" class="no-data">
+    <div v-if="!loading && !sortedProducts.length" class="no-data">
       Tidak ada produk ditemukan.
     </div>
   </div>
@@ -104,6 +119,7 @@ const categories = ref([]);
 const selectedCategory = ref("");
 const sortOption = ref("default");
 const searchQuery = ref("");
+const loading = ref(true);
 
 const API_URL = "http://localhost:8000/api/barang";
 const CAT_URL = "http://localhost:8000/api/categories";
@@ -111,6 +127,7 @@ const CAT_URL = "http://localhost:8000/api/categories";
 // Ambil data produk dan kategori
 const getData = async () => {
   try {
+    loading.value = true;
     const [resProducts, resCategories] = await Promise.all([
       axios.get(API_URL),
       axios.get(CAT_URL),
@@ -119,6 +136,8 @@ const getData = async () => {
     categories.value = resCategories.data;
   } catch (error) {
     console.error("Gagal mengambil data:", error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -383,5 +402,93 @@ onMounted(getData);
   text-align: center;
   color: #777;
   margin-top: 40px;
+}
+
+/* SKELETON LOADING */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-bottom: 1px solid #eee;
+}
+
+.skeleton-content {
+  padding: 15px;
+}
+
+.skeleton-footer {
+  padding: 12px 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line.short {
+  width: 50%;
+  height: 20px;
+}
+
+.skeleton-line.medium {
+  width: 70%;
+  height: 14px;
+}
+
+.skeleton-line.long {
+  width: 90%;
+  height: 14px;
+}
+
+.skeleton-button {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0px,
+    #e0e0e0 200px,
+    #f0f0f0 400px
+  );
+  background-size: 1000px;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+  width: 90px;
+  height: 32px;
 }
 </style>

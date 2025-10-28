@@ -47,7 +47,15 @@ const router = createRouter({
       component: ArtikelDetail,
       props: true
     },
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // Jika ada posisi yang disimpan (tombol back/forward browser)
+    if (savedPosition) {
+      return savedPosition
+    }
+    // Scroll ke atas dengan smooth behavior
+    return { top: 0, behavior: 'smooth' }
+  }
 })
 
 export default router
